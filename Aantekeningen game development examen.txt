@@ -1,0 +1,19 @@
+Game development aantekeningen
+
+Altijd Ewout als mevrouw jacobs aanspreken in mails en dergelijke
+
+ Alles moet echt 100% ingeleverd worden
+
+OPDRACHTEN:
+
+Code niet vol plakken met comments
+
+Overdracht document mag een README zijn
+
+Er moet in de titel of inleiding de naam van de game staan
+
+
+
+GAME:
+
+Best Eduction Delivery Game
