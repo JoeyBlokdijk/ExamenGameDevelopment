@@ -10,6 +10,8 @@ class StartScene extends Phaser.Scene {
         this.load.image("rocket", "logos/Logo1.png");
         this.load.image("meteor", "assets/astroïde.png");
         this.load.image("gasStation", "assets/Gas-station.png");
+        this.load.image("finishLine", "assets/FinishLine.png");
+        this.load.image("fire", "assets/raketVuur.png");
     }
 
     create() {
@@ -50,6 +52,8 @@ class GameScene extends Phaser.Scene {
         this.load.image("rocket", "assets/rocket.png");
         this.load.image("meteor", "assets/astroïde.png");
         this.load.image("gasStation", "assets/Gas-station.png");
+        this.load.image("finishLine", "assets/FinishLine.png");
+        this.load.image("fire", "assets/raketVuur.png");
     }
 
     create() {
@@ -67,6 +71,11 @@ class GameScene extends Phaser.Scene {
         this.rocket.setOffset(400, -350);
         this.rocket.setCollideWorldBounds(true);
 
+        this.flame = this.add.sprite(this.rocket.x, this.rocket.y + this.rocket.height, 'flame');
+        this.flame.setOrigin(0.5, 0);
+        this.flame.setScale(this.rocket.scaleX, this.rocket.scaleY);
+        this.flame.setVisible(false);
+
         this.gasStations = this.physics.add.group();
 
         this.physics.add.collider(this.rocket, this.gasStations, this.gasStationHit, null, this);
@@ -83,7 +92,7 @@ class GameScene extends Phaser.Scene {
         this.meteors = this.physics.add.group();
 
         this.physics.add.collider(this.rocket, this.meteors, this.onRocketHit, null, this);
-        this.time.addEvent({
+        this.meteorTimer = this.time.addEvent({
             delay: 2000,
             callback: this.spawnMeteor,
             callbackScope: this,
@@ -110,6 +119,10 @@ class GameScene extends Phaser.Scene {
             loop: true
         });
 
+        this.time.delayedCall(30000, () => {
+            this.showFinishLine();
+        });
+
     }
 
     update() {
@@ -123,17 +136,50 @@ class GameScene extends Phaser.Scene {
         if (this.cursors.right.isDown || this.keys.D.isDown) {
             this.rocket.setVelocityX(speed);
         }
-        // if (this.cursors.up.isDown || this.keys.W.isDown) {
-        //     this.rocket.setVelocityY(-speed);
-        // }
+        let speedMultiplier = 1;
+        this.flame.x = this.rocket.x;
+        this.flame.y = this.rocket.y + this.rocket.height / 2;
+        if (this.cursors.up.isDown || this.keys.W.isDown) {
+            speedMultiplier = 2;
+            if (this.meteorTimer.delay !== 1000) {
+                this.meteorTimer.remove(false);
+                this.meteorTimer = this.time.addEvent({
+                    delay: 1000,
+                    callback: this.spawnMeteor,
+                    callbackScope: this,
+                    loop: true
+                });
+            }
+            this.flame.setVisible(true);
+            // this.flame.x = this.rocket.x;
+            // this.flame.y = this.rocket.y + this.rocket.height / 2;
+        } else {
+            if (this.meteorTimer.delay !== 2000) {
+                this.meteorTimer.remove(false);
+                this.meteorTimer = this.time.addEvent({
+                    delay: 2000,
+                    callback: this.spawnMeteor,
+                    callbackScope: this,
+                    loop: true
+                });
+            }
+            this.flame.setVisible(false);
+        }
+        this.meteors.getChildren().forEach(meteor => {
+            meteor.body.setVelocityY(150 * speedMultiplier);
+        });
         // if (this.cursors.down.isDown || this.keys.S.isDown) {
         //     this.rocket.setVelocityY(speed);
         // }
+
+        this.meteors.children.iterate((meteor) => {
+            if (meteor) {
+                meteor.rotation += 0.02;
+            }
+        });
     }
 
     onRocketHit(rocket, meteor) {
-        // console.log("Raket is geraakt");
-
         this.scene.start("GameOverSceneHitMeteor");
     }
 
@@ -150,7 +196,7 @@ class GameScene extends Phaser.Scene {
         meteor.rotation = Phaser.Math.DegToRad(-45);
         meteor.body.setImmovable(true);
         meteor.body.setSize(2500, 2900);
-        meteor.body.setOffset(450, 500);
+        meteor.body.setOffset(700, 700);
         meteor.body.setVelocityY(150);
     }
 
@@ -160,12 +206,11 @@ class GameScene extends Phaser.Scene {
         let gasStation = this.gasStations.create(randomX, -50, "gasStation").setOrigin(0.5, 0.5);
         gasStation.setScale(0.05);
         gasStation.rotation = Phaser.Math.DegToRad(-45);
-        gasStation.body.setSize(2500, 2900);
+        gasStation.body.setSize(1000, 1000);
         gasStation.body.setVelocityY(150);
     }
 
     resetHealthBar() {
-        console.log("tank wordt bijgevuld");
         this.health = 105;
         this.updateHealthBar;
     }
@@ -175,6 +220,22 @@ class GameScene extends Phaser.Scene {
         this.healthBar.fillStyle(0xff0000, 1);
         let barWidth = (this.scale.width - 40) * (this.health / this.maxHealth);
         this.healthBar.fillRect(20, this.scale.height - 40, barWidth, 20);
+    }
+
+    showFinishLine() {
+        let finishLineWidth = this.textures.get("finishLine").getSourceImage().width * 0.05;
+        let screenWidth = this.sys.game.config.width;
+
+        for (let x = 0; x < screenWidth; x += finishLineWidth) {
+            let finishLine = this.physics.add.image(x, -50, "finishLine").setScale(0.05);
+            finishLine.body.setVelocityY(150);
+
+            this.physics.add.collider(this.rocket, finishLine, this.gameCompleted, null, this);
+        }
+    }
+
+    gameCompleted() {
+        this.scene.start("FinishedScene");
     }
 }
 
@@ -188,6 +249,8 @@ class GameOverSceneHitMeteor extends Phaser.Scene {
         this.load.image("rocket", "logos/Logo1.png");
         this.load.image("meteor", "assets/astroïde.png");
         this.load.image("gasStation", "assets/Gas-station.png");
+        this.load.image("finishLine", "assets/FinishLine.png");
+        this.load.image("fire", "assets/raketVuur.png");
     }
 
     create() {
@@ -239,6 +302,8 @@ class GameOverEmptyFuel extends Phaser.Scene {
         this.load.image("rocket", "logos/Logo1.png");
         this.load.image("meteor", "assets/astroïde.png");
         this.load.image("gasStation", "assets/Gas-station.png");
+        this.load.image("finishLine", "assets/FinishLine.png");
+        this.load.image("fire", "assets/raketVuur.png");
     }
 
     create() {
@@ -280,6 +345,59 @@ class GameOverEmptyFuel extends Phaser.Scene {
     }
 }
 
+class FinishedScene extends Phaser.Scene {
+    constructor() {
+        super({ key: "FinishedScene" });
+    }
+
+    preload() {
+        this.load.image("space", "assets/backgroundSpace.png");
+        this.load.image("rocket", "logos/Logo1.png");
+        this.load.image("meteor", "assets/astroïde.png");
+        this.load.image("gasStation", "assets/Gas-station.png");
+        this.load.image("finishLine", "assets/FinishLine.png");
+        this.load.image("fire", "assets/raketVuur.png");
+    }
+
+    create() {
+        this.bg = this.add.image(0, 0, "space").setOrigin(0, 0);
+        this.bg.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
+
+        this.add.text(
+            this.sys.game.config.width / 2,
+            this.sys.game.config.height / 2,
+            "Gefeliciteerd",
+            {
+                fontSize: "50px",
+                fill: "#fff",
+                fontFamily: "Arial"
+            }
+        ).setOrigin(0.5, 1);
+
+        this.add.text(
+            this.sys.game.config.width / 2,
+            this.sys.game.config.height / 2,
+            "Je hebt het gehaald!",
+            {
+                fontSize: "50px",
+                fill: "#fff",
+                fontFamily: "Arial"
+            }
+        ).setOrigin(0.5, 0);
+
+        this.button = this.add.text(this.scale.width / 2, 500, "Opnieuw proberen", {
+            fontSize: "32px",
+            color: "#000000",
+            backgroundColor: "#07fa34",
+            padding: { x: 10, y: 5 }
+        }).setOrigin(0.5, 0.5).setInteractive();
+
+        this.button.on("pointerdown", () => {
+            this.scene.start("GameScene");
+        });
+    }
+}
+
 const config = {
     type: Phaser.AUTO,
     width: window.innerWidth,
@@ -291,7 +409,7 @@ const config = {
             gravity: { y: 0 }
         }
     },
-    scene: [StartScene, GameScene, GameOverSceneHitMeteor, GameOverEmptyFuel]
+    scene: [StartScene, GameScene, GameOverSceneHitMeteor, GameOverEmptyFuel, FinishedScene]
 };
 
 
