@@ -31,9 +31,9 @@ function makeInputAbove() {
     let noteField = generateDivByClass("div");
     noteField.setAttribute("class", "noteInputFieldWrapper");
     madeDiv.appendChild(noteField);
-    let noteInputField = generateDivByClass("input");
+    let noteInputField = generateDivByClass("textarea");
     noteInputField.setAttribute("id", "NoteField");
-    noteInputField.setAttribute("type", "textarea");
+    noteInputField.setAttribute("type", "text");
     noteField.appendChild(noteInputField);
 
     let confirmButton = generateDivByClass("a");
@@ -75,21 +75,34 @@ function sendNote(note, day, date) {
 function getLogboek() {
     let xmlHttp = new XMLHttpRequest();
     let url = "getLogboek.php";
+
     xmlHttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            let Result = JSON.parse(xmlHttp.responseText);
-            Result.forEach(Result => {
-                loadAllNotes(Result);
-            });
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                try {
+                    let result = JSON.parse(this.responseText);
+                    console.log(result);
+                    result.forEach(entry => loadAllNotes(entry));
+                } catch (e) {
+                    console.error("JSON Parse Error:", e);
+                    console.log("Server Response:", this.responseText);
+                }
+            } else {
+                console.error("Server error:", this.status, this.responseText);
+            }
         }
     };
     xmlHttp.open("GET", url, true);
     xmlHttp.send();
 }
 
+
 function loadAllNotes(Notes) {
     let day = Notes.dag;
     let date = Notes.datum;
+    if (date) {
+        date = formatNederlandsDatum(date)
+    }
     let note = Notes.notitie;
     let decodedNote = decodeURIComponent(note);
     let decodedDate = decodeURIComponent(date);
@@ -124,4 +137,9 @@ function generateElement(tag, className = "") {
     const el = document.createElement(tag);
     if (className) el.className = className;
     return el;
+}
+
+function formatNederlandsDatum(datum) {
+    let parts = datum.split('-');
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
 }

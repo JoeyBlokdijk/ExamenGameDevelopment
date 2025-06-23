@@ -1,4 +1,5 @@
 <?php
+
 // $host = "localhost";
 // $db_user = "bit_academy";
 // $db_pass = "";
@@ -13,8 +14,6 @@ $conn = new mysqli($host, $db_user, $db_pass, $db_name);
 
 if ($conn->connect_error) {
     die(json_encode(['status' => 'error', 'message' => 'Databaseverbinding mislukt: ' . $conn->connect_error]));
-} else {
-    echo "Gelukt!";
 }
 
 $json = file_get_contents('php://input');
@@ -42,4 +41,5 @@ if ($note && $day && $date) {
 $conn->close();
 
 header("Content-Type: application/json");
+
 echo json_encode($response);

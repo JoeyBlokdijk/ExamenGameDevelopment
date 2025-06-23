@@ -1,10 +1,12 @@
-In dit document ga ik mijn ontwikkelomgeving beschrijven
+Ik werk op mijn laptop, dat is de HP OMEN 016.
 
-In princiepe heb ik 2 omgevingen
+Deze laptop bevat een NVIDIA Geforce RTX 3060 videokaart.
 
-Eerste omgeving:
-Ik zit grootendeels van de tijd die ik aan dit project werk in een klaslokaal op school, in zit dan aan een bureau of lange tafel met daarbij een bureau stoel of normale stoel, dat ligt aan de plek waar ik op die dag ben gaan zitten. Ik heb mijn laptop, dat is een OMEN 16 bij de hand en daarop ga ik het spel realiseren. Daarnaast heb ik mijn muis en oplader, de oplader is van HP en mijn muis hoort bij mijn laptop en is ook van OMEN. Ik ga werken met PHASER, dit ga ik maken binnen Visual Studio Code. Ook ga ik natuurlijk mijn browser gebruiken om het spel te kunnen testen en spelen. Ik ga daaromheen een git-reposetory gebruiken binnen GitHub, hier ga ik elke dag mijn voortgang naar proberen te pushen. Ik zit met meerdere leerlingen om mij heen dus daarom gebruik ik ook mijn oortjes om mij af te kunnen sluiten.
+Ik heb een scherm van 165Hz.
 
+Ook bevat mijn laptop een intel CORE i7.
 
-Tweede omgeving:
-Mijn tweede omgeving is thuis op mijn kamer. Als ik het gevoel heb dat ik achter loop op mijn planning, ga ik thuis verder werken zodat ik op de rit blijf. In mijn kamer heb ik een bed, bureau, bank en 2 kasten. Ook mijn eigen pc staat daar waar ik dus dan waarschijnlijk op ga werken. Ik heb daar 2 beeldschermen op gelijke hoogte wat dan fijner werkt. Ik heb een game stoel die ik gebruik achter mijn bureau. Ik heb daar een headset die ervoor zorgt dat ik nog beter mij kan afsluiten van de buitenwereld. Ik heb een toestenbord en muis staan, de muis is van steelseries en het toetsenbord is een toetsenbord van bol.com. De exacte specificaties van mijn pc weet ik niet, ik weet wel dat het een NVIDIA videokaart heeft, de 1070, en een Intel Core i7.
+Ik werk met Windows.
+
+Ik ga werken met PHASER, dit doe ik in visual studio code.
+
