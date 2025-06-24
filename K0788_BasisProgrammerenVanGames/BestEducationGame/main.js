@@ -19,6 +19,66 @@ class StartScene extends Phaser.Scene {
         this.bg = this.add.image(0, 0, "space").setOrigin(0, 0);
         this.bg.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
 
+        let container = this.add.container(1400, 150);
+
+        let border = this.add.graphics();
+        border.lineStyle(3, 0x000c8c, 1);
+        border.strokeRect(-100, -50, 300, 250);
+
+        container.add(border);
+
+        let text = this.add.text(50, 0, "Spel uitleg:", {
+            fontSize: "20px",
+            color: "#ffffff",
+            fontFamily: "Arial",
+            fontStyle: "bold",
+        });
+        text.setOrigin(0.5);
+        container.add(text);
+
+        let context = this.add.text(-90, 30, "- A / < = Links bewegen", {
+            fontSize: "15px",
+            color: "#ffffff",
+            fontFamily: "Arial",
+            fontStyle: "bold",
+        });
+        container.add(context);
+        let context2 = this.add.text(-90, 50, "- D / > = Rechts bewegen", {
+            fontSize: "15px",
+            color: "#ffffff",
+            fontFamily: "Arial",
+            fontStyle: "bold",
+        });
+        container.add(context2);
+        let context3 = this.add.text(-90, 70, "- W / pijl omhoog = Sneller", {
+            fontSize: "15px",
+            color: "#ffffff",
+            fontFamily: "Arial",
+            fontStyle: "bold",
+        });
+        container.add(context3);
+        let context4 = this.add.text(-90, 90, "- Bijtanken bij tankstation", {
+            fontSize: "15px",
+            color: "#ffffff",
+            fontFamily: "Arial",
+            fontStyle: "bold",
+        });
+        container.add(context4);
+        let context5 = this.add.text(-90, 110, "- Tank leeg = Game Over", {
+            fontSize: "15px",
+            color: "#ffffff",
+            fontFamily: "Arial",
+            fontStyle: "bold",
+        });
+        container.add(context5);
+        let context6 = this.add.text(-90, 130, "- Raken astroïede = Game Over", {
+            fontSize: "15px",
+            color: "#ffffff",
+            fontFamily: "Arial",
+            fontStyle: "bold",
+        });
+        container.add(context6);
+
         this.bestLogo = this.add.image(0, 0, "bestLogo").setOrigin(0.5, 0.5);
         this.bestLogo.setScale(0.1);
         this.bestLogo.x = this.cameras.main.width / 2;
