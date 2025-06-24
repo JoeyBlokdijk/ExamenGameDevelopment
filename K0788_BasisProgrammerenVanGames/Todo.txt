@@ -1,0 +1,3 @@
+zorgen dat er vuur achter de raket komt als pijltje omhoog of W ingedrukt wordt.
+
+Comments zetten door mijn code
