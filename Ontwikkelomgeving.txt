@@ -6,7 +6,7 @@ Ik heb een scherm van 165Hz.
 
 Ook bevat mijn laptop een intel CORE i7.
 
-Ik werk met Windows.
+Ik werk met Windows 11.
 
-Ik ga werken met PHASER, dit doe ik in visual studio code.
+Ik ga werken met PHASER, PHP en een beetje CSS, dit doe ik in visual studio code.
 

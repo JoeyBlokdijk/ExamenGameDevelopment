@@ -1,5 +1,5 @@
 <?php
-
+// THIS IS THE PAGE WHERE THE GAME RUNS
 echo "<!DOCTYPE html>
 <html lang='en'>
 

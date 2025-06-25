@@ -5,6 +5,7 @@ class StartScene extends Phaser.Scene {
         super({ key: "StartScene" });
     }
 
+    // LOADS ALL IMAGES THAT I'M USING
     preload() {
         this.load.image("space", "assets/backgroundSpace.png");
         this.load.image("rocket", "logos/Logo2.png");
@@ -23,9 +24,11 @@ class StartScene extends Phaser.Scene {
     }
 
     create() {
+        // CREATES BACKGROUND OF START SCREEN
         this.bg = this.add.image(0, 0, "space").setOrigin(0, 0);
         this.bg.setDisplaySize(this.sys.game.config.width, this.sys.game.config.height);
 
+        // CREATING THE CONTAINER FOR INSTRUCTIONS
         let container = this.add.container(1400, 150);
 
         let border = this.add.graphics();
@@ -34,6 +37,7 @@ class StartScene extends Phaser.Scene {
 
         container.add(border);
 
+        // ADDING TEXT AND ICONS IN CONTAINER FOR EXPLANATION OF THE GAME
         let text = this.add.text(50, 0, "Spel uitleg:", {
             fontSize: "20px",
             color: "#ffffff",
@@ -177,21 +181,26 @@ class GameScene extends Phaser.Scene {
 
         const centerX = this.sys.game.config.width / 2;
 
-        this.rocket = this.physics.add.sprite(centerX, 650, "rocket").setOrigin(0.5, 0.5);
+        // ADDING ROCKET AS A PHYSIC SO IT CAN BUMP INTO THINGS
+        this.rocket = this.physics.add.sprite(centerX, 600, "rocket").setOrigin(0.5, 0.5);
         this.rocket.rotation = Phaser.Math.DegToRad(-43);
         this.rocket.setScale(0.08);
         this.rocket.setSize(1000, 2100);
         this.rocket.setOffset(400, -350);
         this.rocket.setCollideWorldBounds(true);
 
+        // CREATING THE FIRE BENEATH THE ROKET
         this.fire = this.add.image(this.rocket.x, this.rocket.y + 100, "fire");
         this.fire.setScale(0.05);
         this.fire.setFlipY(true);
         this.fire.setVisible(false);
 
+        // CREATING GROUPS FOR GASSTATION
         this.gasStations = this.physics.add.group();
 
+        // SEES IF THE ROCKET HAS HIT A GASSTATION
         this.physics.add.collider(this.rocket, this.gasStations, this.gasStationHit, null, this);
+        // TIMER FOR THE SPAWNING OF THE GASSTATION
         this.gasStaionTimer = this.time.addEvent({
             delay: 5000,
             callback: this.spawnGasStation,
@@ -199,13 +208,16 @@ class GameScene extends Phaser.Scene {
             loop: true
         });
 
+        // CREATING BUTTON FOR THE GAME TO SEE
         this.cursors = this.input.keyboard.createCursorKeys();
         this.keys = this.input.keyboard.addKeys("W,S,A,D");
 
+        // CREATING A GROUP FOR METEORS
         this.meteors = this.physics.add.group();
 
-
+        // SEES IF THE ROCKET HAS HIT A METEOR
         this.physics.add.collider(this.rocket, this.meteors, this.onRocketHit, null, this);
+        // TIMER FOR THE SPAWNING OF THE METEORS
         this.meteorTimer = this.time.addEvent({
             delay: 2000,
             callback: this.spawnMeteor,
@@ -213,6 +225,7 @@ class GameScene extends Phaser.Scene {
             loop: true
         });
 
+        // CREATS THE FUEL TANK AND MAKE IT GO DOWN
         this.healthBarBackground = this.add.graphics();
         this.healthBarBackground.fillStyle(0x555555, 1);
         this.healthBarBackground.fillRect(20, this.scale.height - 40, this.scale.width - 40, 20);
@@ -220,14 +233,13 @@ class GameScene extends Phaser.Scene {
         this.healthBar = this.add.graphics();
         this.updateHealthBar();
 
-
-        // MAKES THE FUEL GO DOWN AND SEES WHEN THE FUEL IS EMPTY
         this.healthEvent = this.time.addEvent({
-            delay: 1000,
+            delay: 100,
             callback: () => {
-                this.health -= 5;
+                this.health -= 0.5;
                 if (this.health < 0) this.health = 0;
                 this.updateHealthBar();
+                // IF THE FUEL IS EMPTY, YOU WILL BE SEND TO THE GAME OVER SCREEN
                 if (this.health <= 0) {
                     this.scene.start("GameOverEmptyFuel");
                 }
@@ -235,6 +247,7 @@ class GameScene extends Phaser.Scene {
             loop: true
         });
 
+        // SETS TIMER FOR WHEN THE FINISH LINES IS SHOWED
         this.time.delayedCall(60000, () => {
             this.showFinishLine();
         });
@@ -246,12 +259,14 @@ class GameScene extends Phaser.Scene {
 
         this.rocket.setVelocity(0);
 
+        // FIRST TWO IFS SEES WICH BUTTON IS DOWN AND DOES THAT ACTION
         if (this.cursors.left.isDown || this.keys.A.isDown) {
             this.rocket.setVelocityX(-speed);
         }
         if (this.cursors.right.isDown || this.keys.D.isDown) {
             this.rocket.setVelocityX(speed);
         }
+        // WHEN W OR ARROW UP IS PUSHED THE SPEED INCREASES, THE SPAWNRATE AND FLAMES OUT OF THE ROCKET
         let speedMultiplier = 1;
         if (this.cursors.up.isDown || this.keys.W.isDown) {
             this.fire.setVisible(true);
@@ -276,14 +291,16 @@ class GameScene extends Phaser.Scene {
                     loop: true
                 });
             }
-            if (this.healthEvent.delay !== 500) {
+            // LOWERS THE HEALTH FASTER
+            if (this.healthEvent.delay !== 50) {
                 this.healthEvent.remove(false);
                 this.healthEvent = this.time.addEvent({
-                    delay: 500,
+                    delay: 50,
                     callback: () => {
-                        this.health -= 5;
+                        this.health -= 0.5;
                         if (this.health < 0) this.health = 0;
                         this.updateHealthBar();
+                        // IF THE FUEL IS EMPTY, YOU WILL BE SEND TO THE GAME OVER SCREEN
                         if (this.health <= 0) {
                             this.scene.start("GameOverEmptyFuel");
                         }
@@ -292,6 +309,7 @@ class GameScene extends Phaser.Scene {
                 });
             }
         } else {
+            // SETS EVERYTHING TO NORMAL
             this.fire.setVisible(false);
             if (this.meteorTimer.delay !== 2000) {
                 this.meteorTimer.remove(false);
@@ -311,14 +329,16 @@ class GameScene extends Phaser.Scene {
                     loop: true
                 });
             }
-            if (this.healthEvent.delay !== 1000) {
+            // SETS HEALTH LOWERING TO NORMAL
+            if (this.healthEvent.delay !== 100) {
                 this.healthEvent.remove(false);
                 this.healthEvent = this.time.addEvent({
-                    delay: 1000,
+                    delay: 100,
                     callback: () => {
-                        this.health -= 5;
+                        this.health -= 0.5;
                         if (this.health < 0) this.health = 0;
                         this.updateHealthBar();
+                        // IF THE FUEL IS EMPTY, YOU WILL BE SEND TO THE GAME OVER SCREEN
                         if (this.health <= 0) {
                             this.scene.start("GameOverEmptyFuel");
                         }
@@ -327,16 +347,15 @@ class GameScene extends Phaser.Scene {
                 });
             }
         }
+        // CORRECTS THE SPEED OF THE FALLING OBJECTS BASED ON SPEEDMULTIPLIER (1/2)
         this.meteors.getChildren().forEach(meteor => {
             meteor.body.setVelocityY(150 * speedMultiplier);
         });
         this.gasStations.getChildren().forEach(gasStation => {
             gasStation.body.setVelocityY(150 * speedMultiplier);
         });
-        // if (this.cursors.down.isDown || this.keys.S.isDown) {
-        //     this.rocket.setVelocityY(speed);
-        // }
 
+        // ROTATES THE METEOR
         this.meteors.children.iterate((meteor) => {
             if (meteor) {
                 meteor.rotation += 0.02;
@@ -353,6 +372,7 @@ class GameScene extends Phaser.Scene {
         this.resetHealthBar();
     }
 
+    // SPAWNS METEOR ON RANDOM X-POSITION ON TOP OF THE SCREEN
     spawnMeteor() {
         let randomX = Phaser.Math.Between(0, this.sys.game.config.width);
 
@@ -365,6 +385,7 @@ class GameScene extends Phaser.Scene {
         meteor.body.setVelocityY(150);
     }
 
+    // SPAWNS GASSTATION ON RANDOM X-POSITION ON TOP OF THE SCREEN
     spawnGasStation() {
         let randomX = Phaser.Math.Between(0, this.scale.width);
 
@@ -375,9 +396,10 @@ class GameScene extends Phaser.Scene {
         gasStation.body.setVelocityY(150);
     }
 
+    // RESETS THE HEALTHBAR
     resetHealthBar() {
         this.health = 105;
-        this.updateHealthBar;
+        this.updateHealthBar();
     }
 
     updateHealthBar() {
@@ -387,6 +409,7 @@ class GameScene extends Phaser.Scene {
         this.healthBar.fillRect(20, this.scale.height - 40, barWidth, 20);
     }
 
+    // SHOWS FINISHLINE ON FULL WIDTH OF THE SCREEN
     showFinishLine() {
         let finishLineWidth = this.textures.get("finishLine").getSourceImage().width * 0.05;
         let screenWidth = this.sys.game.config.width;
@@ -396,6 +419,7 @@ class GameScene extends Phaser.Scene {
             finishLine.body.setVelocityY(150);
             finishLine.setSize(5000, 1500);
 
+            // ADD A COLLIDER SO WHEN THE FINISH IS HIT, THE FINISHSCENE SHOWS
             this.physics.add.collider(this.rocket, finishLine, this.gameCompleted, null, this);
         }
     }
@@ -405,6 +429,7 @@ class GameScene extends Phaser.Scene {
     }
 }
 
+// SCENE WHEN THE ROCKET HITS A METEOR
 class GameOverSceneHitMeteor extends Phaser.Scene {
     constructor() {
         super({ key: "GameOverSceneHitMeteor" });
@@ -446,12 +471,16 @@ class GameOverSceneHitMeteor extends Phaser.Scene {
             }
         ).setOrigin(0.5, 3);
 
-        this.button = this.add.text(this.scale.width / 2, 500, "Opnieuw proberen", {
-            fontSize: "32px",
-            color: "#000000",
-            backgroundColor: "#07fa34",
-            padding: { x: 10, y: 5 }
-        }).setOrigin(0.5, 4).setInteractive();
+        this.add.text(
+            this.sys.game.config.width / 2,
+            600,
+            "Klik om nog een keer te spelen!",
+            {
+                fontSize: "50px",
+                fill: "#fff",
+                fontFamily: "Arial"
+            }
+        ).setOrigin(0.5, 4);
 
         this.bestLogo = this.add.image(0, 0, "bestLogo").setOrigin(0.5, 0.5);
         this.bestLogo.setScale(0.1);
@@ -469,12 +498,13 @@ class GameOverSceneHitMeteor extends Phaser.Scene {
             }
         ).setOrigin(0.5, -11);
 
-        this.button.on("pointerdown", () => {
+        this.input.on("pointerdown", () => {
             this.scene.start("GameScene");
         });
     }
 }
 
+// SCENE WHEN THE FUEL IS EMPTY
 class GameOverEmptyFuel extends Phaser.Scene {
     constructor() {
         super({ key: "GameOverEmptyFuel" });
@@ -516,12 +546,16 @@ class GameOverEmptyFuel extends Phaser.Scene {
             }
         ).setOrigin(0.5, 3);
 
-        this.button = this.add.text(this.scale.width / 2, 500, "Opnieuw proberen", {
-            fontSize: "32px",
-            color: "#000000",
-            backgroundColor: "#07fa34",
-            padding: { x: 10, y: 5 }
-        }).setOrigin(0.5, 4).setInteractive();
+        this.add.text(
+            this.sys.game.config.width / 2,
+            600,
+            "Klik om nog een keer te spelen!",
+            {
+                fontSize: "50px",
+                fill: "#fff",
+                fontFamily: "Arial"
+            }
+        ).setOrigin(0.5, 4);
 
         this.bestLogo = this.add.image(0, 0, "bestLogo").setOrigin(0.5, 0.5);
         this.bestLogo.setScale(0.1);
@@ -539,12 +573,13 @@ class GameOverEmptyFuel extends Phaser.Scene {
             }
         ).setOrigin(0.5, -11);
 
-        this.button.on("pointerdown", () => {
+        this.input.on("pointerdown", () => {
             this.scene.start("GameScene");
         });
     }
 }
 
+// SCENE WHEN THE ROCKET REACHES THE FINISH
 class FinishedScene extends Phaser.Scene {
     constructor() {
         super({ key: "FinishedScene" });
@@ -587,12 +622,16 @@ class FinishedScene extends Phaser.Scene {
             }
         ).setOrigin(0.5, 3);
 
-        this.button = this.add.text(this.scale.width / 2, 500, "Nog een keer spelen", {
-            fontSize: "32px",
-            color: "#000000",
-            backgroundColor: "#07fa34",
-            padding: { x: 10, y: 5 }
-        }).setOrigin(0.5, 4).setInteractive();
+        this.add.text(
+            this.sys.game.config.width / 2,
+            600,
+            "Klik om nog een keer te spelen!",
+            {
+                fontSize: "50px",
+                fill: "#fff",
+                fontFamily: "Arial"
+            }
+        ).setOrigin(0.5, 4);
 
         this.bestLogo = this.add.image(0, 0, "bestLogo").setOrigin(0.5, 0.5);
         this.bestLogo.setScale(0.1);
@@ -610,12 +649,13 @@ class FinishedScene extends Phaser.Scene {
             }
         ).setOrigin(0.5, -11);
 
-        this.button.on("pointerdown", () => {
+        this.input.on("pointerdown", () => {
             this.scene.start("GameScene");
         });
     }
 }
 
+// WIDTH/HEIGHT, PHYSICS ENGINE AND SCENES THAT ARE USED
 const config = {
     type: Phaser.AUTO,
     width: window.innerWidth,
@@ -623,7 +663,7 @@ const config = {
     physics: {
         default: "arcade",
         arcade: {
-            debug: true,
+            debug: false,
             gravity: { y: 0 }
         }
     },
@@ -633,6 +673,7 @@ const config = {
 
 const game = new Phaser.Game(config);
 
+// ENSURES THAT THE FULL WIDTH IS ALWAYS USED
 window.addEventListener("resize", () => {
     game.scale.resize(window.innerWidth, window.innerHeight);
 });

@@ -6,6 +6,6 @@ Game laten testen (Osama vragen om te testen)
 
 Achtergrond mee laten bewegen
 
-Brandstoftank gelijdelijk omlaag
+Brandstoftank smooth omlaag
 
 Vuur animeren
