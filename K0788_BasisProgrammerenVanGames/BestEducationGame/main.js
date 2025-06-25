@@ -13,6 +13,13 @@ class StartScene extends Phaser.Scene {
         this.load.image("finishLine", "assets/FinishLine.png");
         this.load.image("fire", "assets/raketVuur.png");
         this.load.image("bestLogo", "logos/Logo1.png");
+        // icons
+        this.load.image("A-icon", "Icons/letter-a.png");
+        this.load.image("ArrowLeft", "Icons/arrow_left.png");
+        this.load.image("D-icon", "Icons/letter-d.png");
+        this.load.image("ArrowRight", "Icons/arrow_right.png");
+        this.load.image("W-icon", "Icons/letter-w.png");
+        this.load.image("ArrowUp", "Icons/arrow_up.png");
     }
 
     create() {
@@ -36,42 +43,60 @@ class StartScene extends Phaser.Scene {
         text.setOrigin(0.5);
         container.add(text);
 
-        let context = this.add.text(-90, 30, "- A / < = Links bewegen", {
+        let iconA = this.add.image(-80, 35, "A-icon").setScale(0.04);
+        let slashText = this.add.text(-72, 25, "/").setScale(1.5);
+        let ArrowLeft = this.add.image(-50, 35, "ArrowLeft").setScale(0.04);
+        let context = this.add.text(-30, 30, " = Links bewegen", {
             fontSize: "15px",
             color: "#ffffff",
             fontFamily: "Arial",
             fontStyle: "bold",
         });
+        container.add(iconA);
+        container.add(slashText);
+        container.add(ArrowLeft);
         container.add(context);
-        let context2 = this.add.text(-90, 50, "- D / > = Rechts bewegen", {
+        let iconD = this.add.image(-80, 65, "D-icon").setScale(0.04);
+        let slashText2 = this.add.text(-73, 55, "/").setScale(1.5);
+        let ArrowRight = this.add.image(-50, 65, "ArrowRight").setScale(0.04);
+        let context2 = this.add.text(-30, 55, "= Rechts bewegen", {
             fontSize: "15px",
             color: "#ffffff",
             fontFamily: "Arial",
             fontStyle: "bold",
         });
+        container.add(iconD);
+        container.add(slashText2);
+        container.add(ArrowRight);
         container.add(context2);
-        let context3 = this.add.text(-90, 70, "- W / pijl omhoog = Sneller", {
+        let iconW = this.add.image(-80, 90, "W-icon").setScale(0.04);
+        let slashText3 = this.add.text(-73, 80, "/").setScale(1.5);
+        let ArrowUp = this.add.image(-50, 90, "ArrowUp").setScale(0.04);
+        let context3 = this.add.text(-30, 80, " = Sneller", {
             fontSize: "15px",
             color: "#ffffff",
             fontFamily: "Arial",
             fontStyle: "bold",
         });
+        container.add(iconW);
+        container.add(slashText3);
+        container.add(ArrowUp);
         container.add(context3);
-        let context4 = this.add.text(-90, 90, "- Bijtanken bij tankstation", {
+        let context4 = this.add.text(-90, 110, "- Bijtanken bij tankstation", {
             fontSize: "15px",
             color: "#ffffff",
             fontFamily: "Arial",
             fontStyle: "bold",
         });
         container.add(context4);
-        let context5 = this.add.text(-90, 110, "- Tank leeg = Game Over", {
+        let context5 = this.add.text(-90, 140, "- Tank leeg = Game Over", {
             fontSize: "15px",
             color: "#ffffff",
             fontFamily: "Arial",
             fontStyle: "bold",
         });
         container.add(context5);
-        let context6 = this.add.text(-90, 130, "- Raken astroïede = Game Over", {
+        let context6 = this.add.text(-90, 170, "- Raken astroïede = Game Over", {
             fontSize: "15px",
             color: "#ffffff",
             fontFamily: "Arial",

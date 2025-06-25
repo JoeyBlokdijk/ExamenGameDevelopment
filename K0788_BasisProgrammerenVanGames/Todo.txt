@@ -4,9 +4,8 @@ Game design schets maken
 
 Game laten testen (Osama vragen om te testen)
 
+Achtergrond mee laten bewegen
 
-Ik heb vandaag weer verder gewerkt aan de game, ik heb gezorgd dat logo's zichtbaar zijn op alle schermen (Het begin scherm, beide game over schermen en het scherm als de finish gehaald is). Daarna heb ik gemaakt dat wanneer de speler op W of pijlje omhoog drukt, dat er een vlammetje uit de uitlaat van de raket komt. Ook heb ik gezorgd dat de tankstations sneller op de speler afkomen en ook vaker spawnen wanneer de speler op W of pijltje omhoog drukt en dat de tank sneller leeg loopt. Ik heb de hitbox van de finish aangepast zodat dit logischer eruit ziet. Vandaag heb ik ook een test laten uitvoeren door mijn klasgenoot Osama, ik heb hem gekozen omdat hij het meest overeenkomt met de doelgroep en ik hem ook daarbuitenom het meest geschikt vond voor het testen. Deze test vond plaats om 11:13. Het doel was om te testen of er volgens hem nog verbeteringen aan de game aangebracht konden worden. Hij heeft mijn volledige game getest die ik nu had staan en de bedoeling was om eventuele bugs of andere verbeteringen te vinden. Hij heeft op mijn laptop gespeeld op mijn Chrome browser. Hij heeft mijn game gespeeld en de bevinding die hij deed was dat er misschien nog een instructie op het beginscherm moest komen omdat voor hem de besturing en dergelijke niet duidelijk was bij het opstarten van het spel, voor de rest had hij momenteel geen verbeterpunten. Ik heb een kleine instructie toegevoegd zodat het spel duidelijk is voor iemand die het spel zomaar opstart. Daarna heb ik om 12:30 Osama nog een keer het spel laten testen, Deze keer was de feedback het volgende:
-- In de spel uitleg niet platte tekst voor het verwijzen naar    knoppen, maar plaatjes toevoegen zodat het voor iedereen duidelijk is
-- Proberen te zorgen dat de brandstof tank smoother omlaag gaat tijdens het spel
-- Hij zei dat het er ook beter uit zou zien als de achtergrond mee beweegt, nu stond de achtergrond de hele tijd stil
-- Ook zou hij het een leuke toevoeging vinden als het vuur ook wat meer geanimeerd wordt
+Brandstoftank gelijdelijk omlaag
+
+Vuur animeren
